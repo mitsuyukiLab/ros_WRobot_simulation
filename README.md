@@ -13,8 +13,6 @@ docker run -p 6080:80 --shm-size=512m taiga4112/ros-wrobot-simulation:latest
 
 2. Browse [http://127.0.0.1:6080](http://127.0.0.1:6080).
 
-![Image from Gyazo](https://i.gyazo.com/db6ae09b4021a9956594124f1421e754.gif)
-
 3. Open your terminal in VNC viewer.
   - MENU button in lower left -> System Tools -> LXTerminal (or Terminator) 
 
