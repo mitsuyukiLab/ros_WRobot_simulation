@@ -1,0 +1,13 @@
+/home/chuanhui/catkin_ws/install/_setup_util.py
+/home/chuanhui/catkin_ws/install/env.sh
+/home/chuanhui/catkin_ws/install/setup.bash
+/home/chuanhui/catkin_ws/install/local_setup.bash
+/home/chuanhui/catkin_ws/install/setup.sh
+/home/chuanhui/catkin_ws/install/local_setup.sh
+/home/chuanhui/catkin_ws/install/setup.zsh
+/home/chuanhui/catkin_ws/install/local_setup.zsh
+/home/chuanhui/catkin_ws/install/.rosinstall
+/home/chuanhui/catkin_ws/install/lib/pkgconfig/sensor.pc
+/home/chuanhui/catkin_ws/install/share/sensor/cmake/sensorConfig.cmake
+/home/chuanhui/catkin_ws/install/share/sensor/cmake/sensorConfig-version.cmake
+/home/chuanhui/catkin_ws/install/share/sensor/package.xml

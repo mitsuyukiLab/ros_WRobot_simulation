@@ -1,0 +1,391 @@
+<?xml version="1.0"?>
+<robot name="whiterabbit">
+  <material name="PCL">
+    <color rgba="1 1 1 0.7"/>
+  </material>
+  <material name="white">
+    <color rgba="1 1 1 1"/>
+  </material>
+  <material name="black">
+    <color rgba="0 0 0 1"/>
+  </material>
+
+  <link name="base_footprint">
+   <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.001 0.001 0.001" />
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="base_link_joint" type="fixed">
+    <origin xyz="0.0 0 0.07" rpy="0 0 0" />
+    <parent link="base_footprint"/>
+    <child link="base_link" />
+  </joint>
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.1 0.1 0.1"/>
+      </geometry>
+      <material name="PCL"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.1 0.1 0.1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.5"/>
+      <inertia ixx="0.0075" iyy="0.01875" izz="0.01875"
+               ixy="0" iyz="0" ixz="0"/>
+    </inertial>
+  </link>
+
+  <!-- Laser  -->
+  <link name="laser">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="0.02" radius="0.03"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="0.02" radius="0.03"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+    <inertial>
+      <mass value="0.01"/>
+      <inertia ixx="0.000083" iyy="0.000083" izz="0.0000167"
+               ixy="0" iyz="0" ixz="0"/>
+    </inertial>
+  </link>
+
+  <joint name="laser_joint" type="fixed">
+    <origin xyz="0 0 0.06"/>
+    <parent link="base_link"/>
+    <child link="laser"/>
+  </joint>
+
+  <!-- Camera -->
+  <link name="camera">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.003 0.02 0.02"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.003 0.02 0.02"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+  <joint name="camera_joint" type="fixed">
+    <origin xyz="0 0 0.02" rpy="0 0 0"/>
+    <parent link="laser"/>
+    <child link="camera"/>
+  </joint>
+
+  <!--  IMU  -->
+  <link name="imu"/>
+
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu"/>
+    <origin xyz="-0.032 0 0.068" rpy="0 0 0"/>
+  </joint>
+
+  <!-- front caster  -->
+  <link name="front_caster">
+    <visual>
+      <geometry>
+        <cylinder length="0.012" radius="0.01"/>
+      </geometry>
+      <material name="white"/>
+      <origin rpy="0 0 0" xyz="0 0 -0.0075"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.012" radius="0.01"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 -0.0075"/>
+    </collision>
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="0.00083" iyy="0.00083" izz="0.000167"
+               ixy="0" iyz="0" ixz="0"/>
+    </inertial>
+  </link>
+
+  <joint name="front_caster_joint" type="continuous">
+    <axis xyz="0 0 1"/>
+    <parent link="base_link"/>
+    <child link="front_caster"/>
+    <origin xyz="0.04 0 -0.05"/>
+  </joint>
+
+  <!-- right rear wheel  -->
+  <link name="right_rear_wheel">
+    <visual>
+      <origin rpy="-1.57075 0 0" xyz="0 -0.004 0"/>
+      <geometry>
+        <cylinder length="0.008" radius="0.03"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.008" radius="0.03"/>
+      </geometry>
+      <origin rpy="1.57075 0 0" xyz="0 -0.004 0"/>
+    </collision>
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="5.1458e-5" iyy="5.1458e-5" izz="6.125e-5"
+               ixy="0" iyz="0" ixz="0"/>
+    </inertial>
+  </link>
+
+  <joint name="right_rear_wheel_joint" type="continuous">
+    <axis xyz="0 1 0"/>
+    <parent link="base_link"/>
+    <child link="right_rear_wheel"/>
+    <origin xyz="-0.02 -0.05 -0.04"/>
+  </joint>
+
+  <!-- left rear wheel  -->
+  <link name="left_rear_wheel">
+    <visual>
+      <origin rpy="-1.57075 0 0" xyz="0 0.004 0"/>
+      <geometry>
+        <cylinder length="0.008" radius="0.03"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.008" radius="0.03"/>
+      </geometry>
+      <origin rpy="1.57075 0 0" xyz="0 0.004 0"/>
+    </collision>
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="5.1458e-5" iyy="5.1458e-5" izz="6.125e-5"
+               ixy="0" iyz="0" ixz="0"/>
+    </inertial>
+  </link>
+
+  <joint name="left_rear_wheel_joint" type="continuous">
+    <axis xyz="0 1 0"/>
+    <parent link="base_link"/>
+    <child link="left_rear_wheel"/>
+    <origin xyz="-0.02 0.05 -0.04"/>
+  </joint>
+
+  <!-- front wheel  -->
+  <link name="front_wheel">
+    <visual>
+      <origin rpy="1.57075 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.008" radius="0.008"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.008" radius="0.008"/>
+      </geometry>
+      <origin rpy="1.57075 0 0" xyz="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="0.1"/>
+      <inertia ixx="5.1458e-5" iyy="5.1458e-5" izz="6.125e-5"
+               ixy="0" iyz="0" ixz="0"/>
+    </inertial>
+  </link>
+
+  <joint name="front_wheel_joint" type="continuous">
+    <axis xyz="0 1 0"/>
+    <parent link="front_caster"/>
+    <child link="front_wheel"/>
+    <origin xyz="-0.002 0 -0.012"/>
+  </joint>
+
+  <gazebo>
+    <plugin name="differenial_drive_controller"
+            filename="libgazebo_ros_diff_drive.so">
+      <commandTopic>cmd_vel</commandTopic>
+      <odometryTopic>odom</odometryTopic>
+      <odometryFrame>odom</odometryFrame>
+      <odometrySource>world</odometrySource>
+      <publishOdomTF>false</publishOdomTF>
+      <updateRate>10</updateRate>
+      <!-- old package, where the right and left wheel are changed to fix a former code issue -->
+      <leftJoint>right_rear_wheel_joint</leftJoint>
+      <rightJoint>left_rear_wheel_joint</rightJoint>
+      <robotBaseFrame>base_footprint</robotBaseFrame>
+      <wheelSeparation>0.108</wheelSeparation>
+      <wheelDiameter>0.06</wheelDiameter>
+      <publishWheelJointState>true</publishWheelJointState>
+      <wheelAcceleration>1</wheelAcceleration>
+      <wheelTorque>10</wheelTorque>
+      <rosDebugLevel>na</rosDebugLevel>
+    </plugin>
+
+<!--   joint state publisher  -->
+    <plugin name="joint_state_publisher"
+            filename="libgazebo_ros_joint_state_publisher.so">
+      <jointName>front_caster_joint, front_wheel_joint</jointName>
+    </plugin>
+<!--   joint state publisher   -->
+  </gazebo>
+
+
+  <!-- laser -->
+  <gazebo reference="laser">
+    <sensor type="ray" name="laser">
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>true</visualize>
+      <update_rate>100</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>180</samples>
+            <resolution>1</resolution>
+
+            <min_angle>-3.1415926</min_angle>
+            <max_angle>3.1415926</max_angle>
+<!--
+            <min_angle>-1.04719755</min_angle>
+            <max_angle>1.04719755</max_angle>
+-->
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.1</min>
+          <max>0.8</max>
+          <resolution>0.01</resolution>
+       </range>
+      </ray>
+      <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
+        <topicName>/scan</topicName>
+        <frameName>laser</frameName>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!-- camera -->
+  <gazebo reference="camera">
+    <sensor type="camera" name="camera">
+      <update_rate>5</update_rate>
+      <camera name="head">
+        <horizontal_fov>1.3962634</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.02</near>
+          <far>300</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <!-- Noise is sampled independently per pixel on each frame.
+               That pixel's noise value is added to each of its color
+               channels, which at that point lie in the range [0,1]. -->
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+        <alwaysOn>true</alwaysOn>
+        <updateRate>0.0</updateRate>
+        <cameraName>camera</cameraName>
+        <imageTopicName>image_raw</imageTopicName>
+        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+        <frameName>camera</frameName>
+        <hackBaseline>0.07</hackBaseline>
+        <distortionK1>0.0</distortionK1>
+        <distortionK2>0.0</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>0.0</distortionT1>
+        <distortionT2>0.0</distortionT2>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+
+  <!--  IMU  -->
+  <gazebo reference="imu">
+    <gravity>true</gravity>
+    <sensor name="imu_sensor" type="imu">
+      <always_on>true</always_on>
+      <update_rate>100</update_rate>
+      <visualize>true</visualize>
+      <topic>__default_topic__</topic>
+      <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+        <topicName>imu_data</topicName>
+        <bodyName>imu</bodyName>
+        <updateRateHZ>10.0</updateRateHZ>
+        <gaussianNoise>0.0</gaussianNoise>
+        <xyzOffset>0 0 0</xyzOffset>
+        <rpyOffset>0 0 0</rpyOffset>
+        <frameName>imu</frameName>
+      </plugin>
+      <pose>0 0 0 0 0 0</pose>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="left_rear_wheel">
+    <mu1>0.5</mu1>
+    <mu2>0.5</mu2>
+    <kp>500000.0</kp>
+    <kd>10.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>0.1</maxVel>
+    <fdir1>1 0 0</fdir1>
+    <material>Gazebo/FlatBlack</material>
+  </gazebo>
+
+  <gazebo reference="right_rear_wheel">
+    <mu1>0.5</mu1>
+    <mu2>0.5</mu2>
+    <kp>500000.0</kp>
+    <kd>10.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>0.1</maxVel>
+    <fdir1>1 0 0</fdir1>
+    <material>Gazebo/FlatBlack</material>
+  </gazebo>
+
+  <gazebo reference="front_wheel">
+    <mu1>0.1</mu1>
+    <mu2>0.1</mu2>
+    <kp>500000.0</kp>
+    <kd>10.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>0.1</maxVel>
+    <fdir1>1 0 0</fdir1>
+    <material>Gazebo/FlatBlack</material>
+  </gazebo>
+
+</robot>
+
+
+
+

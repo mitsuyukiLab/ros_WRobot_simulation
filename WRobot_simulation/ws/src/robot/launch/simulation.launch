@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<launch>
+<!--
+  <param name="robot_description" textfile="$(find robot)/urdf/robot.urdf"/>  
+  <include file="$(find gazebo_ros)/launch/empty_world.launch"/>  
+-->
+  <arg name="x_pos" default="-0.3"/>
+  <arg name="y_pos" default="0.3"/>
+  <arg name="z_pos" default="0.012"/>
+  <arg name="tele_control" default="false"/>
+  <arg name="navigate" default="true"/>
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find robot)/urdf/robot.urdf" />
+  <include file="$(find robot)/launch/arena_world.launch">
+    <arg name="world_name" value="$(find robot)/worlds/arena_world.world"/>
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <node pkg="robot_pose_ekf" type="robot_pose_ekf" name="robot_pose_ekf">
+    <param name="output_frame" value="odom_combined"/>
+    <param name="base_footprint_frame" value="base_footprint"/>
+    <param name="freq" value="30.0"/>
+    <param name="sensor_timeout" value="1.0"/>
+    <param name="odom_used" value="true"/>
+    <param name="imu_used" value="true"/>
+    <param name="vo_used" value="false"/>
+
+    <!--  <remap from="odom" to="pr2_base_odometry/odom" />  -->
+  </node>
+
+  <group if="$(arg tele_control)">
+    <include file="$(find teleop)/launch/teleop.launch" />
+  </group>
+
+  <group if="$(arg navigate)">
+    <include file="$(find robot)/launch/navigation.launch" />
+  </group>
+
+  <param name="global_camera_description" command="$(find xacro)/xacro --inorder $(find robot)/urdf/global_camera.urdf" />
+
+<!--
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <param name="use_gui" value="false"/>
+  </node>
+-->
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+  <node name="spawn_robot" pkg="gazebo_ros" type="spawn_model"
+        args="-param robot_description -urdf -model robot -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) " />
+
+  <node name="spawn_global_camera" pkg="gazebo_ros" type="spawn_model"
+        args="-param global_camera_description -urdf -model global_camera -x 0 -y 0 -z 0.5 " />
+
+</launch>

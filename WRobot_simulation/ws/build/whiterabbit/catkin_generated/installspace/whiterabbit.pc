@@ -1,0 +1,8 @@
+prefix=/home/chuanhui/catkin_ws/install
+
+Name: whiterabbit
+Description: Description of whiterabbit
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: 

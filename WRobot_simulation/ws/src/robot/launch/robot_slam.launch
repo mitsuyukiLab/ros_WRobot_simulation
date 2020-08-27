@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="tele_control" default="true"/>
+  <arg name="navigate" default="false"/>
+
+  <!-- Arguments -->
+  <arg name="configuration_basename" default="turtlebot3_lds_2d.lua"/>
+  <arg name="open_rviz" default="true"/>
+
+  <!-- Robot -->
+  <include file="$(find robot)/launch/simulation.launch">
+    <arg name="tele_control" value="$(arg tele_control)"/>
+    <arg name="navigate" value="$(arg navigate)"/>
+  </include>
+
+  <!-- SLAM: Gmapping, Cartographer, Hector, Karto, Frontier_exploration, RTAB-Map -->
+  <include file="$(find robot)/launch/slam_gmapping.launch"/>
+  <!-- rviz -->
+  <group if="$(arg open_rviz)"> 
+    <node pkg="rviz" type="rviz" name="rviz_slam" required="true"
+          args="-d $(find turtlebot3_slam)/rviz/turtlebot3_gmapping.rviz"/>
+  </group>
+</launch>

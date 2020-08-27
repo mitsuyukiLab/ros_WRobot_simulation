@@ -1,0 +1,2 @@
+set(rasp_test_MESSAGE_FILES "")
+set(rasp_test_SERVICE_FILES "/home/chuanhui/catkin_ws/src/rasp_test/srv/Canny.srv")
